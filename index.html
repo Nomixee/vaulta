@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download Fetchora</title>
+<meta name="description" content="Fetchora download manager for Mac, Windows, Ubuntu and Android.">
+<link rel="icon" type="image/png" href="icon.png">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #16181d; --muted: #5d6573;
+    --line: #e2e5ea; --accent: #2563eb; --accent-text: #ffffff; --code: #eef1f5;
+    --hl: #dbe7ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1115; --card: #181b21; --text: #eceef2; --muted: #9aa3b2;
+      --line: #2a2f38; --accent: #4f8cff; --accent-text: #0b0d10; --code: #232833; --hl: #1d2b47; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 48px 16px 64px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  header img { width: 64px; height: 64px; border-radius: 14px; }
+  h1 { font-size: 34px; margin: 0; letter-spacing: -0.02em; }
+  .tag { color: var(--muted); margin: 0 0 32px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px;
+    display: flex; flex-direction: column; }
+  .card.mine { border-color: var(--accent); box-shadow: 0 0 0 3px var(--hl); }
+  .card h2 { font-size: 20px; margin: 0 0 2px; display: flex; align-items: center; gap: 8px; }
+  .you { font-size: 12px; font-weight: 600; background: var(--accent); color: var(--accent-text);
+    border-radius: 99px; padding: 2px 8px; display: none; }
+  .card.mine .you { display: inline-block; }
+  .needs { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
+  .btn { display: block; text-align: center; text-decoration: none; font-weight: 600;
+    background: var(--accent); color: var(--accent-text); border-radius: 10px; padding: 11px 14px; }
+  .btn:hover { filter: brightness(1.08); }
+  .alt { font-size: 14px; margin: 8px 0 0; text-align: center; }
+  a { color: var(--accent); }
+  ol { padding-left: 20px; margin: 14px 0 0; font-size: 14px; }
+  li { margin-bottom: 6px; }
+  code { background: var(--code); border-radius: 6px; padding: 2px 6px; font-size: 13px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-all; }
+  .note { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+  footer { margin-top: 36px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icon.png" alt="">
+    <h1>Fetchora</h1>
+  </header>
+  <p class="tag">Download manager for files, YouTube and other video sites, and torrents. Free, and no account needed.</p>
+
+  <div class="grid">
+    <section class="card" data-os="mac">
+      <h2>🍎 Mac <span class="you">Your device</span></h2>
+      <p class="needs">macOS 14 or newer · Apple Silicon or Intel</p>
+      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.dmg">Download for Mac (.dmg)</a>
+      <ol>
+        <li>Open the DMG and drag <b>Fetchora</b> onto <b>Applications</b>.</li>
+        <li>Open Fetchora. When macOS says it can't be opened, click <b>Done</b>.</li>
+        <li>Go to <b>System Settings → Privacy &amp; Security</b>, click <b>Open Anyway</b> and enter your password.</li>
+        <li>For YouTube and torrents, press <b>Install</b> in the banner at the top. This needs <a href="https://brew.sh">Homebrew</a>.</li>
+      </ol>
+    </section>
+
+    <section class="card" data-os="windows">
+      <h2>🪟 Windows <span class="you">Your device</span></h2>
+      <p class="needs">Windows 10 or 11 · 64-bit</p>
+      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.exe">Download for Windows (.exe)</a>
+      <ol>
+        <li>Put <b>Fetchora.exe</b> in a folder you'll keep. There's no installer.</li>
+        <li>Double-click it. If Windows says <b>"Windows protected your PC"</b>, click <b>More info → Run anyway</b>.</li>
+        <li>For YouTube and torrents, press <b>Install</b> in the blue banner at the top.</li>
+      </ol>
+    </section>
+
+    <section class="card" data-os="linux">
+      <h2>🐧 Ubuntu <span class="you">Your device</span></h2>
+      <p class="needs">Ubuntu 22.04 or newer · 64-bit (Intel/AMD)</p>
+      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.deb">Download for Ubuntu (.deb)</a>
+      <ol>
+        <li>Download <b>Fetchora.deb</b> to your <b>Downloads</b> folder.</li>
+        <li>Open Terminal (Ctrl+Alt+T) and run:<br><code>sudo apt install ~/Downloads/Fetchora.deb</code></li>
+        <li>Open <b>Fetchora</b> from <b>Show Apps</b>.</li>
+        <li>For YouTube, press <b>Install</b> in the blue banner at the top.</li>
+      </ol>
+      <p class="note">To uninstall: <code>sudo apt remove fetchora</code></p>
+    </section>
+
+    <section class="card" data-os="android">
+      <h2>🤖 Android <span class="you">Your device</span></h2>
+      <p class="needs">Android 8 or newer</p>
+      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.apk">Download for Android (.apk)</a>
+      <p class="alt">Older or 32-bit phone? <a href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora-older-phones.apk">Get this version instead</a></p>
+      <ol>
+        <li>Open the downloaded <b>Fetchora.apk</b>. If asked, let your browser <b>install unknown apps</b>, then tap <b>Install</b>.</li>
+        <li>Share any video or link from YouTube, Chrome or Instagram to <b>Fetchora</b>, then pick a quality.</li>
+        <li>Files are saved in <b>Download/Fetchora</b>.</li>
+      </ol>
+    </section>
+  </div>
+
+  <footer>
+    Older versions and release notes: <a href="https://github.com/Nomixee/Fetchora/releases">all releases</a>.
+  </footer>
+</main>
+<script>
+  (function () {
+    var ua = navigator.userAgent, os = null;
+    if (/Android/i.test(ua)) os = "android";
+    else if (/Windows/i.test(ua)) os = "windows";
+    else if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad/i.test(ua)) os = "mac";
+    else if (/Linux|X11/i.test(ua)) os = "linux";
+    var card = os && document.querySelector('.card[data-os="' + os + '"]');
+    if (card) { card.classList.add("mine"); card.parentNode.insertBefore(card, card.parentNode.firstChild); }
+  })();
+</script>
+</body>
+</html>

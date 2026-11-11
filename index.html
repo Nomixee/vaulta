@@ -3,121 +3,538 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Download Fetchora</title>
-<meta name="description" content="Fetchora download manager for Mac, Windows, Ubuntu and Android.">
+<title>Fetchora — Download Manager</title>
+<meta name="description" content="Fetchora is a fast, private download manager for files, video sites and torrents. Free for Mac, Windows, Ubuntu and Android.">
+<meta name="theme-color" content="#0A1735">
+<meta property="og:title" content="Fetchora — Download Manager">
+<meta property="og:description" content="Fast, private downloads for files, video sites and torrents. Mac, Windows, Ubuntu and Android.">
+<meta property="og:image" content="https://nomixee.github.io/Fetchora/icon.png">
 <link rel="icon" type="image/png" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f6f7f9; --card: #ffffff; --text: #16181d; --muted: #5d6573;
-    --line: #e2e5ea; --accent: #2563eb; --accent-text: #ffffff; --code: #eef1f5;
-    --hl: #dbe7ff;
+    --midnight: #060E22; --navy-deep: #0A1735; --navy: #10224A; --navy-soft: #1B3266; --royal: #2F5BD3;
+    --gold: #D4AF5A; --gold-light: #EBD49A; --gold-deep: #B08A35; --success: #12A877;
+    --bg: #F3F5F9; --card: #FFFFFF; --text: #0E1A33; --muted: #5B6880; --line: #E3E8F0; --code: #EEF1F6;
+    --shadow: 0 1px 2px rgba(14,26,51,.04), 0 12px 32px -12px rgba(14,26,51,.14);
+    --radius: 20px;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #0f1115; --card: #181b21; --text: #eceef2; --muted: #9aa3b2;
-      --line: #2a2f38; --accent: #4f8cff; --accent-text: #0b0d10; --code: #232833; --hl: #1d2b47; }
+    :root:not([data-theme="light"]) {
+      --bg: #050B19; --card: #0D1730; --text: #E8ECF5; --muted: #8C9AB8; --line: #1C2A4A; --code: #13203F;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #050B19; --card: #0D1730; --text: #E8ECF5; --muted: #8C9AB8; --line: #1C2A4A; --code: #13203F;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -12px rgba(0,0,0,.5);
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text);
-    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif; }
-  main { max-width: 960px; margin: 0 auto; padding: 48px 16px 64px; }
-  header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
-  header img { width: 64px; height: 64px; border-radius: 14px; }
-  h1 { font-size: 34px; margin: 0; letter-spacing: -0.02em; }
-  .tag { color: var(--muted); margin: 0 0 32px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px;
-    display: flex; flex-direction: column; }
-  .card.mine { border-color: var(--accent); box-shadow: 0 0 0 3px var(--hl); }
-  .card h2 { font-size: 20px; margin: 0 0 2px; display: flex; align-items: center; gap: 8px; }
-  .you { font-size: 12px; font-weight: 600; background: var(--accent); color: var(--accent-text);
-    border-radius: 99px; padding: 2px 8px; display: none; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; color: #fff; overflow: hidden;
+    background: radial-gradient(1200px 600px at 0% 100%, rgba(47,91,211,.28), transparent 60%),
+                linear-gradient(135deg, var(--navy-soft) 0%, var(--navy) 45%, var(--navy-deep) 100%); }
+  .hero::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,175,90,.5), transparent); }
+  .rings { position: absolute; right: -220px; top: -260px; width: 820px; height: 820px; pointer-events: none;
+    animation: spin 120s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  nav { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; padding: 22px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 800;
+    font-size: 20px; letter-spacing: -.02em; }
+  .brand img { width: 38px; height: 38px; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+  .nav-links { margin-left: auto; display: flex; gap: 4px; align-items: center; }
+  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 600; color: rgba(255,255,255,.75);
+    padding: 8px 14px; border-radius: 10px; transition: color .2s, background .2s; }
+  .nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+  .nav-links .ghost { border: 1px solid rgba(255,255,255,.18); color: #fff; }
+
+  .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px;
+    align-items: center; padding: 56px 0 96px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light);
+    border: 1px solid rgba(212,175,90,.35); background: rgba(212,175,90,.08); padding: 6px 14px 6px 10px;
+    border-radius: 99px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #34D399; position: relative; }
+  .dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; background: rgba(52,211,153,.45);
+    animation: pulse 1.8s ease-out infinite; }
+  @keyframes pulse { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(40px, 5.6vw, 64px); line-height: 1.04;
+    letter-spacing: -.025em; margin: 22px 0 18px; }
+  h1 em { font-style: normal; background: linear-gradient(120deg, var(--gold-light), var(--gold) 50%, var(--gold-deep));
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lede { font-size: 18px; color: rgba(255,255,255,.72); max-width: 520px; margin: 0 0 32px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn-gold { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800;
+    font-size: 15px; color: var(--midnight); padding: 16px 24px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold) 50%, var(--gold-deep));
+    box-shadow: 0 10px 30px -8px rgba(212,175,90,.6); transition: transform .2s, box-shadow .2s; }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -8px rgba(212,175,90,.7); }
+  .btn-gold:active { transform: translateY(0) scale(.98); }
+  .btn-line { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600;
+    font-size: 15px; color: #fff; padding: 15px 22px; border-radius: 16px; border: 1px solid rgba(255,255,255,.22);
+    transition: background .2s, border-color .2s; }
+  .btn-line:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.35); }
+  .meta { margin-top: 22px; font-size: 13px; color: rgba(255,255,255,.55); display: flex; gap: 18px; flex-wrap: wrap; }
+  .meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Throughput card mock */
+  .stage { position: relative; perspective: 1400px; margin: 40px 0 56px; }
+  .tcard { position: relative; border-radius: 28px; padding: 26px 26px 22px; color: #fff; overflow: hidden;
+    background: linear-gradient(140deg, #22397A 0%, var(--navy) 50%, var(--midnight) 100%);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 40px 80px -24px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08);
+    transform: rotateY(-8deg) rotateX(4deg); transition: transform .6s cubic-bezier(.2,.8,.2,1);
+    animation: float 7s ease-in-out infinite; }
+  .stage:hover .tcard { transform: rotateY(0) rotateX(0); }
+  @keyframes float { 50% { translate: 0 -10px; } }
+  .tcard .rows { display: flex; justify-content: space-between; align-items: center; }
+  .label { font-size: 11px; font-weight: 700; letter-spacing: .14em; color: rgba(255,255,255,.55); text-transform: uppercase; }
+  .live { display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 800; letter-spacing: .12em;
+    color: #6EE7B7; background: rgba(18,168,119,.16); border: 1px solid rgba(18,168,119,.4);
+    padding: 4px 10px 4px 8px; border-radius: 99px; }
+  .speed { display: flex; align-items: baseline; gap: 8px; margin: 14px 0 2px; }
+  .speed b { font-size: 52px; font-weight: 700; letter-spacing: -.04em; line-height: 1; }
+  .speed i { font-style: normal; color: var(--gold-light); font-size: 20px; font-weight: 600; }
+  .sub { font-size: 13px; color: rgba(255,255,255,.6); }
+  .spark { width: 100%; height: 86px; margin: 18px 0 16px; display: block; }
+  .spark .line { fill: none; stroke: var(--gold); stroke-width: 2.4; stroke-linecap: round;
+    stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 2.4s .4s cubic-bezier(.2,.8,.2,1) forwards; }
+  .spark .area { opacity: 0; animation: fade 1.2s 1.4s forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,.1); padding-top: 14px; }
+  .stats div:last-child { text-align: right; }
+  .stats strong { display: block; font-size: 19px; margin-top: 2px; }
+  .chip { position: absolute; display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px;
+    background: rgba(255,255,255,.97); color: #0E1A33; border-radius: 16px;
+    box-shadow: 0 20px 40px -12px rgba(0,0,0,.45); font-size: 13px; min-width: 230px; }
+  .chip .ic { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; flex: none; }
+  .chip b { display: block; font-size: 13.5px; }
+  .chip small { color: #5B6880; }
+  .chip .bar { height: 4px; border-radius: 4px; background: #E9EDF4; margin-top: 6px; overflow: hidden; }
+  .chip .bar span { display: block; height: 100%; width: 0; border-radius: 4px; background: var(--navy);
+    animation: grow 3.2s 1s cubic-bezier(.2,.8,.2,1) forwards; }
+  @keyframes grow { to { width: 72%; } }
+  .chip.a { left: -44px; bottom: -66px; animation: float 6s 1s ease-in-out infinite; }
+  .chip.b { right: 36px; top: -54px; min-width: 0; animation: float 8s ease-in-out infinite; }
+
+  /* ---------- Trust strip ---------- */
+  .strip { margin-top: -44px; position: relative; z-index: 3; }
+  .strip .inner { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--card);
+    border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .strip .cell { padding: 24px 26px; }
+  .strip .cell + .cell { border-left: 1px solid var(--line); }
+  .strip b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -.03em; }
+  .strip .cell > span { color: var(--muted); font-size: 13.5px; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 96px 0 0; }
+  .kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-deep); }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 3.6vw, 42px); letter-spacing: -.02em;
+    line-height: 1.12; margin: 10px 0 12px; }
+  .section-lede { color: var(--muted); max-width: 600px; margin: 0 0 40px; font-size: 17px; }
+
+  .platforms { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .card { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; box-shadow: var(--shadow); display: flex; flex-direction: column;
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s, box-shadow .3s; }
+  .card:hover { transform: translateY(-3px); }
+  .card.mine { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,175,90,.18), var(--shadow); }
+  .card-head { display: flex; align-items: center; gap: 14px; }
+  .os-ic { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; flex: none;
+    background: linear-gradient(140deg, var(--navy-soft), var(--navy-deep)); color: var(--gold); }
+  .os-ic svg { width: 26px; height: 26px; }
+  .card h3 { margin: 0; font-size: 20px; letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .you { display: none; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--midnight); background: linear-gradient(135deg, var(--gold-light), var(--gold)); padding: 3px 9px; border-radius: 99px; }
   .card.mine .you { display: inline-block; }
-  .needs { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
-  .btn { display: block; text-align: center; text-decoration: none; font-weight: 600;
-    background: var(--accent); color: var(--accent-text); border-radius: 10px; padding: 11px 14px; }
-  .btn:hover { filter: brightness(1.08); }
-  .alt { font-size: 14px; margin: 8px 0 0; text-align: center; }
-  a { color: var(--accent); }
-  ol { padding-left: 20px; margin: 14px 0 0; font-size: 14px; }
-  li { margin-bottom: 6px; }
-  code { background: var(--code); border-radius: 6px; padding: 2px 6px; font-size: 13px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-all; }
-  .note { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
-  footer { margin-top: 36px; color: var(--muted); font-size: 14px; }
+  .needs { color: var(--muted); font-size: 13.5px; margin: 2px 0 0; }
+  .dl { margin: 20px 0 4px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    text-decoration: none; padding: 14px 16px 14px 18px; border-radius: 14px; background: var(--navy); color: #fff;
+    font-weight: 700; transition: background .2s, transform .2s; }
+  .dl:hover { background: var(--navy-soft); }
+  .dl:active { transform: scale(.99); }
+  .card.mine .dl { background: linear-gradient(135deg, var(--gold-light), var(--gold) 50%, var(--gold-deep)); color: var(--midnight); }
+  .dl .size { font-size: 12.5px; font-weight: 600; opacity: .7; white-space: nowrap; }
+  .dl .arrow { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.12); flex: none; }
+  .card.mine .dl .arrow { background: rgba(6,14,34,.12); }
+  .dl-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .alt { font-size: 13.5px; margin: 8px 0 0; color: var(--muted); }
+  .alt a { color: var(--text); font-weight: 600; text-decoration-color: var(--gold); text-underline-offset: 3px; }
+  details { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; }
+  summary { cursor: pointer; font-size: 14px; font-weight: 600; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-size: 20px; font-weight: 400; color: var(--muted); transition: transform .3s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  ol { padding: 0; margin: 14px 0 0; list-style: none; counter-reset: s; font-size: 14px; }
+  ol li { counter-increment: s; position: relative; padding-left: 36px; margin-bottom: 10px; color: var(--muted); }
+  ol li b { color: var(--text); }
+  ol li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 8px;
+    display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--code); color: var(--text); }
+  ol li a { color: var(--text); text-decoration-color: var(--gold); }
+  code { background: var(--code); border-radius: 6px; padding: 2px 7px; font-size: 12.5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-all; color: var(--text); }
+  .note { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feature { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px;
+    box-shadow: var(--shadow); }
+  .feature .fi { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
+    background: rgba(212,175,90,.12); color: var(--gold-deep); margin-bottom: 18px; }
+  .feature .fi svg { width: 22px; height: 22px; }
+  .feature h4 { margin: 0 0 6px; font-size: 17px; letter-spacing: -.01em; }
+  .feature p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+  .closing { margin: 96px 0 0; border-radius: 28px; padding: 56px; color: #fff; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--navy-soft), var(--navy) 50%, var(--navy-deep));
+    display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .closing h2 { color: #fff; margin: 0 0 8px; }
+  .closing p { margin: 0; color: rgba(255,255,255,.7); }
+  footer { padding: 40px 0 48px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; }
+  footer a { color: var(--text); font-weight: 600; text-decoration-color: var(--gold); text-underline-offset: 3px; }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .hero .reveal { transition-duration: 1s; }
+
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 64px; padding: 32px 0 96px; }
+    .stage { max-width: 440px; margin: 0 auto; width: 100%; }
+    .chip.a { left: -8px; } .chip.b { right: -8px; }
+    .features { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .wrap { padding: 0 16px; }
+    .nav-links a:not(.ghost) { display: none; }
+    .platforms, .features { grid-template-columns: 1fr; }
+    .strip .inner { grid-template-columns: repeat(2, 1fr); }
+    .strip .cell:nth-child(3) { border-left: 0; }
+    .strip .cell:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .strip .cell { padding: 18px; }
+    .strip b { font-size: 23px; }
+    .tcard { transform: none; padding: 22px 20px 18px; }
+    .speed b { font-size: 44px; }
+    .chip { display: none; }
+    .stage { margin: 8px 0 24px; }
+    .closing { padding: 36px 24px; }
+    section { padding-top: 72px; }
+    .lede { font-size: 16.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    .spark .line { stroke-dashoffset: 0; } .spark .area { opacity: 1; } .chip .bar span { width: 72%; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <img src="icon.png" alt="">
-    <h1>Fetchora</h1>
-  </header>
-  <p class="tag">Download manager for files, YouTube and other video sites, and torrents. Free, and no account needed.</p>
 
-  <div class="grid">
-    <section class="card" data-os="mac">
-      <h2>🍎 Mac <span class="you">Your device</span></h2>
-      <p class="needs">macOS 14 or newer · Apple Silicon or Intel</p>
-      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.dmg">Download for Mac (.dmg)</a>
-      <ol>
-        <li>Open the DMG and drag <b>Fetchora</b> onto <b>Applications</b>.</li>
-        <li>Open Fetchora. When macOS says it can't be opened, click <b>Done</b>.</li>
-        <li>Go to <b>System Settings → Privacy &amp; Security</b>, click <b>Open Anyway</b> and enter your password.</li>
-        <li>For YouTube and torrents, press <b>Install</b> in the banner at the top. This needs <a href="https://brew.sh">Homebrew</a>.</li>
-      </ol>
-    </section>
+<header class="hero">
+  <svg class="rings" viewBox="0 0 820 820" aria-hidden="true">
+    <g fill="none" stroke="#D4AF5A">
+      <circle cx="410" cy="410" r="120" stroke-opacity=".14"/><circle cx="410" cy="410" r="160" stroke-opacity=".12"/>
+      <circle cx="410" cy="410" r="200" stroke-opacity=".10"/><circle cx="410" cy="410" r="240" stroke-opacity=".09"/>
+      <circle cx="410" cy="410" r="280" stroke-opacity=".08"/><circle cx="410" cy="410" r="320" stroke-opacity=".06"/>
+      <circle cx="410" cy="410" r="360" stroke-opacity=".05"/><circle cx="410" cy="410" r="400" stroke-opacity=".04"/>
+      <circle cx="410" cy="410" r="300" stroke-opacity=".18" stroke-dasharray="2 14"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#"><img src="icon.png" alt="">Fetchora</a>
+      <div class="nav-links">
+        <a href="#download">Download</a>
+        <a href="#features">Features</a>
+        <a class="ghost" href="https://github.com/Nomixee/Fetchora/releases">Releases</a>
+      </div>
+    </nav>
 
-    <section class="card" data-os="windows">
-      <h2>🪟 Windows <span class="you">Your device</span></h2>
-      <p class="needs">Windows 10 or 11 · 64-bit</p>
-      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.exe">Download for Windows (.exe)</a>
-      <ol>
-        <li>Put <b>Fetchora.exe</b> in a folder you'll keep. There's no installer.</li>
-        <li>Double-click it. If Windows says <b>"Windows protected your PC"</b>, click <b>More info → Run anyway</b>.</li>
-        <li>For YouTube and torrents, press <b>Install</b> in the blue banner at the top.</li>
-      </ol>
-    </section>
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow reveal"><span class="dot"></span><span id="release-tag">Latest release</span></span>
+        <h1 class="reveal">Every download,<br><em>precisely managed.</em></h1>
+        <p class="lede reveal">Fetchora brings files, video sites and torrents into one calm, fast download manager. Free, private, and no account needed.</p>
+        <div class="cta-row reveal">
+          <a class="btn-gold" id="primary-cta" href="#download">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6M5 20h14"/></svg>
+            <span id="primary-label">Download Fetchora</span>
+          </a>
+          <a class="btn-line" href="#download">All platforms</a>
+        </div>
+        <div class="meta reveal">
+          <span>✓ Free forever</span><span>✓ No account</span><span>✓ No ads</span>
+        </div>
+      </div>
 
-    <section class="card" data-os="linux">
-      <h2>🐧 Ubuntu <span class="you">Your device</span></h2>
-      <p class="needs">Ubuntu 22.04 or newer · 64-bit (Intel/AMD)</p>
-      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.deb">Download for Ubuntu (.deb)</a>
-      <ol>
-        <li>Download <b>Fetchora.deb</b> to your <b>Downloads</b> folder.</li>
-        <li>Open Terminal (Ctrl+Alt+T) and run:<br><code>sudo apt install ~/Downloads/Fetchora.deb</code></li>
-        <li>Open <b>Fetchora</b> from <b>Show Apps</b>.</li>
-        <li>For YouTube, press <b>Install</b> in the blue banner at the top.</li>
-      </ol>
-      <p class="note">To uninstall: <code>sudo apt remove fetchora</code></p>
-    </section>
+      <div class="stage reveal" aria-hidden="true">
+        <div class="tcard">
+          <div class="rows"><span class="label">Live throughput</span><span class="live"><span class="dot"></span>LIVE</span></div>
+          <div class="speed num"><b id="speed">0.0</b><i>MB/s</i></div>
+          <div class="sub">3 active · 1 in queue</div>
+          <svg class="spark" viewBox="0 0 400 86" preserveAspectRatio="none">
+            <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D4AF5A" stop-opacity=".38"/><stop offset="1" stop-color="#D4AF5A" stop-opacity="0"/></linearGradient></defs>
+            <path class="area" fill="url(#g)" d="M0 70 C30 70 40 58 70 56 S110 64 140 48 S190 30 220 38 S270 22 300 20 S350 12 400 10 V86 H0Z"/>
+            <path class="line" d="M0 70 C30 70 40 58 70 56 S110 64 140 48 S190 30 220 38 S270 22 300 20 S350 12 400 10"/>
+          </svg>
+          <div class="stats num">
+            <div><span class="label">Active</span><strong>3</strong></div>
+            <div><span class="label">Completed</span><strong data-count="128">0</strong></div>
+            <div><span class="label">Saved</span><strong><span data-count="24.6" data-dec="1">0</span> GB</strong></div>
+          </div>
+        </div>
+        <div class="chip a">
+          <div class="ic" style="background:rgba(192,80,77,.12);color:#C0504D">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+          </div>
+          <div style="flex:1;min-width:0"><b>Keynote 2026 · 1080p</b><small class="num">8.6 MB/s · 42s left</small><div class="bar"><span></span></div></div>
+        </div>
+        <div class="chip b">
+          <div class="ic" style="background:rgba(18,168,119,.12);color:#12A877">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </div>
+          <div><b>Report.pdf</b><small>Completed · 12.4 MB</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
-    <section class="card" data-os="android">
-      <h2>🤖 Android <span class="you">Your device</span></h2>
-      <p class="needs">Android 8 or newer</p>
-      <a class="btn" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.apk">Download for Android (.apk)</a>
-      <p class="alt">Older or 32-bit phone? <a href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora-older-phones.apk">Get this version instead</a></p>
-      <ol>
-        <li>Open the downloaded <b>Fetchora.apk</b>. If asked, let your browser <b>install unknown apps</b>, then tap <b>Install</b>.</li>
-        <li>Share any video or link from YouTube, Chrome or Instagram to <b>Fetchora</b>, then pick a quality.</li>
-        <li>Files are saved in <b>Download/Fetchora</b>.</li>
-      </ol>
-    </section>
+<div class="wrap strip">
+  <div class="inner reveal">
+    <div class="cell"><b class="num"><span data-count="1000">0</span>+</b><span>Video sites supported</span></div>
+    <div class="cell"><b class="num"><span data-count="16">0</span>×</b><span>Parallel connections</span></div>
+    <div class="cell"><b class="num" data-count="4">0</b><span>Platforms</span></div>
+    <div class="cell"><b class="num">0</b><span>Accounts or tracking</span></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section id="download">
+    <div class="kicker reveal">Download</div>
+    <h2 class="reveal">Choose your platform</h2>
+    <p class="section-lede reveal">Every build comes from the same latest release. We've highlighted the one for your device.</p>
+
+    <div class="platforms">
+      <article class="card reveal" data-os="android">
+        <div class="card-head">
+          <div class="os-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></div>
+          <div><h3>Android <span class="you">Your device</span></h3><p class="needs">Android 8 or newer</p></div>
+        </div>
+        <a class="dl" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.apk" data-asset="Fetchora.apk">
+          <span class="dl-left"><span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6"/></svg></span>Download .apk</span>
+          <span class="size num"></span>
+        </a>
+        <p class="alt">Older or 32-bit phone? <a href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora-older-phones.apk">Get this version instead</a></p>
+        <details>
+          <summary>How to install</summary>
+          <ol>
+            <li>Open the downloaded <b>Fetchora.apk</b>. If asked, let your browser <b>install unknown apps</b>, then tap <b>Install</b>.</li>
+            <li>Share any video or link from YouTube, Chrome or Instagram to <b>Fetchora</b>, then pick a quality.</li>
+            <li>Files are saved in <b>Download/Fetchora</b>.</li>
+          </ol>
+        </details>
+      </article>
+
+      <article class="card reveal" data-os="mac">
+        <div class="card-head">
+          <div class="os-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="11" rx="1.8"/><path d="M2 19.5h20"/></svg></div>
+          <div><h3>Mac <span class="you">Your device</span></h3><p class="needs">macOS 14 or newer · Apple Silicon or Intel</p></div>
+        </div>
+        <a class="dl" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.dmg" data-asset="Fetchora.dmg">
+          <span class="dl-left"><span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6"/></svg></span>Download .dmg</span>
+          <span class="size num"></span>
+        </a>
+        <details>
+          <summary>How to install</summary>
+          <ol>
+            <li>Open the DMG and drag <b>Fetchora</b> onto <b>Applications</b>.</li>
+            <li>Open Fetchora. When macOS says it can't be opened, click <b>Done</b>.</li>
+            <li>Go to <b>System Settings → Privacy &amp; Security</b>, click <b>Open Anyway</b> and enter your password.</li>
+            <li>For YouTube and torrents, press <b>Install</b> in the banner at the top. This needs <a href="https://brew.sh">Homebrew</a>.</li>
+          </ol>
+        </details>
+      </article>
+
+      <article class="card reveal" data-os="windows">
+        <div class="card-head">
+          <div class="os-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="3.5" width="19" height="13" rx="1.8"/><path d="M8 20.5h8M12 16.5v4"/></svg></div>
+          <div><h3>Windows <span class="you">Your device</span></h3><p class="needs">Windows 10 or 11 · 64-bit</p></div>
+        </div>
+        <a class="dl" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.exe" data-asset="Fetchora.exe">
+          <span class="dl-left"><span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6"/></svg></span>Download .exe</span>
+          <span class="size num"></span>
+        </a>
+        <details>
+          <summary>How to install</summary>
+          <ol>
+            <li>Put <b>Fetchora.exe</b> in a folder you'll keep. There's no installer.</li>
+            <li>Double-click it. If Windows says <b>"Windows protected your PC"</b>, click <b>More info → Run anyway</b>.</li>
+            <li>For YouTube and torrents, press <b>Install</b> in the banner at the top.</li>
+          </ol>
+        </details>
+      </article>
+
+      <article class="card reveal" data-os="linux">
+        <div class="card-head">
+          <div class="os-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="3.5" width="19" height="17" rx="2"/><path d="M7 9l3 3-3 3M12.5 15H17"/></svg></div>
+          <div><h3>Ubuntu <span class="you">Your device</span></h3><p class="needs">Ubuntu 22.04 or newer · 64-bit (Intel/AMD)</p></div>
+        </div>
+        <a class="dl" href="https://github.com/Nomixee/Fetchora/releases/latest/download/Fetchora.deb" data-asset="Fetchora.deb">
+          <span class="dl-left"><span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6"/></svg></span>Download .deb</span>
+          <span class="size num"></span>
+        </a>
+        <details>
+          <summary>How to install</summary>
+          <ol>
+            <li>Download <b>Fetchora.deb</b> to your <b>Downloads</b> folder.</li>
+            <li>Open Terminal (Ctrl+Alt+T) and run:<br><code>sudo apt install ~/Downloads/Fetchora.deb</code></li>
+            <li>Open <b>Fetchora</b> from <b>Show Apps</b>.</li>
+            <li>For YouTube, press <b>Install</b> in the banner at the top.</li>
+          </ol>
+          <p class="note">To uninstall: <code>sudo apt remove fetchora</code></p>
+        </details>
+      </article>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="kicker reveal">Why Fetchora</div>
+    <h2 class="reveal">Built like a finance app.<br>Reliable to the last byte.</h2>
+    <p class="section-lede reveal">Clear numbers, steady progress and nothing in your way. Everything you need to move large files with confidence.</p>
+    <div class="features">
+      <div class="feature reveal">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
+        <h4>Multi-connection speed</h4><p>Splits each file into up to 16 parallel streams, and backs off politely when a server asks.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></div>
+        <h4>Video sites, your quality</h4><p>YouTube, Instagram, TikTok and 1000+ more. Pick anything from 4K down to audio-only.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M6.6 7.3l3.4 3M17.4 7.3l-3.4 3M6.6 16.7l3.4-3M17.4 16.7l-3.4-3"/></svg></div>
+        <h4>Torrents built in</h4><p>Open magnet links and .torrent files right alongside everything else. No extra app.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v13"/></svg></div>
+        <h4>Share to download</h4><p>On Android, tap Share in any app and choose Fetchora. The download starts right away.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></div>
+        <h4>Pause and resume</h4><p>Stop any time and pick up exactly where you left off, even after closing the app.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>Private by design</h4><p>No account, no ads, no tracking. Your downloads stay on your device.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="closing reveal">
+    <div>
+      <h2>Ready when you are.</h2>
+      <p>Free on Android, Mac, Windows and Ubuntu.</p>
+    </div>
+    <a class="btn-gold" href="#download">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6M5 20h14"/></svg>
+      Get Fetchora
+    </a>
   </div>
 
   <footer>
-    Older versions and release notes: <a href="https://github.com/Nomixee/Fetchora/releases">all releases</a>.
+    <span>Only download content you have the right to.</span>
+    <span>Older versions and release notes: <a href="https://github.com/Nomixee/Fetchora/releases">all releases</a></span>
   </footer>
 </main>
+
 <script>
-  (function () {
-    var ua = navigator.userAgent, os = null;
-    if (/Android/i.test(ua)) os = "android";
-    else if (/Windows/i.test(ua)) os = "windows";
-    else if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad/i.test(ua)) os = "mac";
-    else if (/Linux|X11/i.test(ua)) os = "linux";
-    var card = os && document.querySelector('.card[data-os="' + os + '"]');
-    if (card) { card.classList.add("mine"); card.parentNode.insertBefore(card, card.parentNode.firstChild); }
+(function () {
+  // Highlight and lead with the visitor's platform.
+  var ua = navigator.userAgent, os = null;
+  if (/Android/i.test(ua)) os = "android";
+  else if (/Windows/i.test(ua)) os = "windows";
+  else if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad/i.test(ua)) os = "mac";
+  else if (/Linux|X11/i.test(ua)) os = "linux";
+  var names = { android: "Android", windows: "Windows", mac: "Mac", linux: "Ubuntu" };
+  var card = os && document.querySelector('.card[data-os="' + os + '"]');
+  if (card) {
+    card.classList.add("mine");
+    card.parentNode.insertBefore(card, card.parentNode.firstChild);
+    var link = card.querySelector(".dl");
+    var cta = document.getElementById("primary-cta");
+    cta.href = link.href;
+    document.getElementById("primary-label").textContent = "Download for " + names[os];
+  }
+
+  // Reveal on scroll.
+  var items = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    items.forEach(function (el, i) {
+      if (el.closest(".hero")) el.style.transitionDelay = (i * 90) + "ms";
+      io.observe(el);
+    });
+  } else items.forEach(function (el) { el.classList.add("in"); });
+
+  // Count-up numbers.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function countUp(el) {
+    var end = parseFloat(el.dataset.count), dec = parseInt(el.dataset.dec || "0", 10), t0 = null, dur = 1600;
+    if (reduce) { el.textContent = end.toLocaleString(undefined, { minimumFractionDigits: dec, maximumFractionDigits: dec }); return; }
+    function step(t) {
+      t0 = t0 || t; var p = Math.min((t - t0) / dur, 1), k = 1 - Math.pow(1 - p, 4);
+      el.textContent = (end * k).toLocaleString(undefined, { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var cio = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); cio.unobserve(e.target); } });
+  }, { threshold: 0.4 }) : null;
+  document.querySelectorAll("[data-count]").forEach(function (el) { cio ? cio.observe(el) : countUp(el); });
+
+  // Live-looking throughput figure.
+  var speed = document.getElementById("speed"), v = 0, target = 12.8;
+  (function tick() {
+    v += (target - v) * 0.08;
+    speed.textContent = v.toFixed(1);
+    if (Math.abs(target - v) < 0.05) target = 10.5 + Math.random() * 4.5;
+    if (!reduce) setTimeout(tick, 60); else speed.textContent = "12.8";
   })();
+
+  // Fill in the real version and file sizes from the latest release.
+  function fmt(b) { var u = ["B", "KB", "MB", "GB"], i = 0; while (b >= 1000 && i < u.length - 1) { b /= 1000; i++; } return b.toFixed(b >= 100 ? 0 : 1) + " " + u[i]; }
+  fetch("https://api.github.com/repos/Nomixee/Fetchora/releases/latest")
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (rel) {
+      if (!rel) return;
+      var latest = rel.published_at;
+      (rel.assets || []).forEach(function (a) {
+        if (a.updated_at > latest) latest = a.updated_at;
+        var el = document.querySelector('[data-asset="' + a.name + '"] .size');
+        if (el) el.textContent = fmt(a.size);
+      });
+      var d = new Date(latest).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+      document.getElementById("release-tag").textContent = (rel.tag_name || "Latest") + " · Updated " + d;
+    })
+    .catch(function () {});
+})();
 </script>
 </body>
 </html>

@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vaulta — Download Manager</title>
-<meta name="description" content="Vaulta is a fast, private download manager for files, video sites and torrents. Free for Mac, Windows, Ubuntu and Android.">
+<meta name="description" content="Vaulta is a fast, private download manager for files, video sites and torrents. Free for Mac, Windows, Ubuntu, Android and iPhone.">
 <meta name="theme-color" content="#0A1735">
 <meta property="og:title" content="Vaulta — Download Manager">
-<meta property="og:description" content="Fast, private downloads for files, video sites and torrents. Mac, Windows, Ubuntu and Android.">
+<meta property="og:description" content="Fast, private downloads for files, video sites and torrents. Mac, Windows, Ubuntu, Android and iPhone.">
 <meta property="og:image" content="https://nomixee.github.io/vaulta/icon.png">
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -350,6 +350,30 @@
         </details>
       </article>
 
+      <article class="card reveal" data-os="ios">
+        <div class="card-head">
+          <div class="os-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/><path d="M10.5 5.5h3"/></svg></div>
+          <div><h3>iPhone <span class="you">Your device</span></h3><p class="needs">iOS 15 or newer · installed from a Mac or Windows PC</p></div>
+        </div>
+        <a class="dl" href="https://github.com/Nomixee/vaulta/releases/latest/download/Vaulta.ipa" data-asset="Vaulta.ipa">
+          <span class="dl-left"><span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6"/></svg></span>Download .ipa</span>
+          <span class="size num"></span>
+        </a>
+        <p class="alt">Vaulta is not on the App Store, so an iPhone can't install it by tapping the file. A computer puts it on the phone.</p>
+        <details>
+          <summary>How to install</summary>
+          <ol>
+            <li>On a Mac or Windows PC, download <b>Vaulta.ipa</b> and install the free tool <a href="https://sideloadly.io">Sideloadly</a>.</li>
+            <li>Connect the iPhone with its cable and tap <b>Trust</b> on the phone.</li>
+            <li>Open Sideloadly, drag <b>Vaulta.ipa</b> into it, type your Apple ID and click <b>Start</b>.</li>
+            <li>On the iPhone open <b>Settings › General › VPN &amp; Device Management</b>, tap your Apple ID, then <b>Trust</b>.</li>
+            <li>If asked, turn on <b>Settings › Privacy &amp; Security › Developer Mode</b> and restart the phone.</li>
+            <li>Open <b>Vaulta</b>. Files are saved in <b>Files › On My iPhone › Vaulta</b>.</li>
+          </ol>
+          <p class="note">With a free Apple ID the app stops opening after 7 days. Repeat step 3 to renew it; your downloads are kept. On iPhone, Vaulta downloads files and YouTube videos; torrents are not available.</p>
+        </details>
+      </article>
+
       <article class="card reveal" data-os="mac">
         <div class="card-head">
           <div class="os-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="11" rx="1.8"/><path d="M2 19.5h20"/></svg></div>
@@ -466,10 +490,11 @@
   // Highlight and lead with the visitor's platform.
   var ua = navigator.userAgent, os = null;
   if (/Android/i.test(ua)) os = "android";
+  else if (/iPhone|iPad|iPod/i.test(ua)) os = "ios";
   else if (/Windows/i.test(ua)) os = "windows";
   else if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad/i.test(ua)) os = "mac";
   else if (/Linux|X11/i.test(ua)) os = "linux";
-  var names = { android: "Android", windows: "Windows", mac: "Mac", linux: "Ubuntu" };
+  var names = { android: "Android", windows: "Windows", mac: "Mac", linux: "Ubuntu", ios: "iPhone" };
   var card = os && document.querySelector('.card[data-os="' + os + '"]');
   if (card) {
     card.classList.add("mine");

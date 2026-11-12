@@ -207,6 +207,54 @@
     gap: 16px; flex-wrap: wrap; }
   footer a { color: var(--text); font-weight: 600; text-decoration-color: var(--gold); text-underline-offset: 3px; }
 
+  /* ---------- Browser extension ---------- */
+  .ext { display: grid; grid-template-columns: 1.05fr .95fr; gap: 20px; align-items: stretch; }
+  .ext .card { height: 100%; }
+  .ext ol { margin-top: 18px; }
+  .ext code { word-break: normal; white-space: nowrap; }
+  .ext-points { display: grid; gap: 14px; margin: 18px 0 0; padding: 0; list-style: none; }
+  .ext-points li { display: flex; gap: 12px; font-size: 14.5px; color: var(--muted); }
+  .ext-points li b { color: var(--text); display: block; font-size: 15px; }
+  .ext-points .pi { width: 34px; height: 34px; border-radius: 10px; flex: none; display: grid; place-items: center;
+    background: rgba(212,175,90,.12); color: var(--gold-deep); }
+  .ext-points .pi svg { width: 17px; height: 17px; }
+  .browsers { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .browsers span { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: var(--code); color: var(--text); }
+  .callout { margin-top: 16px; padding: 12px 14px; border-radius: 12px; font-size: 13.5px; color: var(--muted);
+    background: rgba(212,175,90,.08); border: 1px solid rgba(212,175,90,.28); }
+  .callout b { color: var(--text); }
+  /* preview of the button on a video */
+  .player { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 10; min-height: 300px;
+    background: radial-gradient(500px 260px at 30% 80%, rgba(47,91,211,.45), transparent 60%),
+                radial-gradient(400px 220px at 80% 30%, rgba(124,58,237,.35), transparent 60%),
+                linear-gradient(160deg, #1B2747, #070C1A); box-shadow: var(--shadow); }
+  .player .play { position: absolute; left: 50%; top: 58%; width: 64px; height: 64px; margin: -32px; border-radius: 50%;
+    display: grid; place-items: center; background: rgba(255,255,255,.14); color: #fff; backdrop-filter: blur(6px); }
+  .player .scrub { position: absolute; left: 18px; right: 18px; bottom: 18px; height: 4px; border-radius: 4px; background: rgba(255,255,255,.2); }
+  .player .scrub span { display: block; width: 38%; height: 100%; border-radius: 4px; background: #fff; }
+  .vbtn { position: absolute; right: 14px; top: 14px; display: flex; align-items: center; gap: 3px; padding: 3px; border-radius: 99px;
+    color: #fff; font: 600 13px/1 var(--sans); background: linear-gradient(120deg, #60a5fa, #2563eb 40%, #7c3aed 80%, #2563eb);
+    background-size: 260% 100%; animation: flow 7s ease-in-out infinite;
+    box-shadow: 0 8px 24px -6px rgba(37,99,235,.65), inset 0 1px 0 rgba(255,255,255,.35); }
+  .vbtn .main { display: flex; align-items: center; gap: 8px; padding: 4px 14px 4px 4px; }
+  .vbtn .ic { width: 24px; height: 24px; border-radius: 50%; background: #fff; color: #2563eb; display: grid; place-items: center; }
+  .vbtn .ic svg { animation: drop 1.4s ease-in-out infinite; }
+  .vbtn .more { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.22); display: grid; place-items: center; }
+  .vmenu { position: absolute; right: 14px; top: 56px; width: 230px; padding: 6px; border-radius: 14px; color: #E8ECF4;
+    background: rgba(17,20,30,.88); backdrop-filter: blur(14px); box-shadow: 0 20px 50px -12px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08);
+    font-size: 12.5px; }
+  .vmenu .sec { padding: 6px 9px 4px; font-size: 9.5px; font-weight: 700; letter-spacing: .08em; color: #6F7B93; text-transform: uppercase; }
+  .vmenu .r { display: flex; align-items: center; gap: 6px; padding: 7px 9px; border-radius: 8px; }
+  .vmenu .r i { flex: 1; font-style: normal; }
+  .vmenu .r small { color: #8F9AB0; font-variant-numeric: tabular-nums; }
+  .vmenu .r.hl { background: linear-gradient(90deg, #2563eb, #4f46e5); color: #fff; }
+  .vmenu .r.hl small { color: #DBE6FF; }
+  .vmenu .t { font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 5px; background: rgba(167,139,250,.2); color: #C4B5FD; }
+  .vmenu .t.k { background: linear-gradient(90deg, #f59e0b, #ef4444); color: #fff; }
+  .vmenu .r.hl .t { background: rgba(255,255,255,.25); color: #fff; }
+  @keyframes flow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  @keyframes drop { 0%,100% { transform: translateY(-1px); } 50% { transform: translateY(2px); } }
+
   /* Reveal on scroll */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
@@ -217,11 +265,14 @@
     .stage { max-width: 440px; margin: 0 auto; width: 100%; }
     .chip.a { left: -8px; } .chip.b { right: -8px; }
     .features { grid-template-columns: repeat(2, 1fr); }
+    .ext { grid-template-columns: 1fr; }
   }
   @media (max-width: 720px) {
     .wrap { padding: 0 16px; }
     .nav-links a:not(.ghost) { display: none; }
     .platforms, .features { grid-template-columns: 1fr; }
+    .player { min-height: 0; aspect-ratio: 4 / 3.4; }
+    .vmenu { width: 210px; }
     .strip .inner { grid-template-columns: repeat(2, 1fr); }
     .strip .cell:nth-child(3) { border-left: 0; }
     .strip .cell:nth-child(n+3) { border-top: 1px solid var(--line); }
@@ -259,6 +310,7 @@
       <a class="brand" href="#"><img src="icon.png" alt="">Vaulta</a>
       <div class="nav-links">
         <a href="#download">Download</a>
+        <a href="#extension">Extension</a>
         <a href="#features">Features</a>
         <a class="ghost" href="https://github.com/Nomixee/vaulta/releases">Releases</a>
       </div>
@@ -433,6 +485,60 @@
           <p class="note">To uninstall: <code>sudo apt remove vaulta</code></p>
         </details>
       </article>
+    </div>
+  </section>
+
+  <section id="extension">
+    <div class="kicker reveal">Browser extension</div>
+    <h2 class="reveal">Download straight from the page.</h2>
+    <p class="section-lede reveal">Add Vaulta to Chrome, Edge or Brave. A Download button appears on videos, and file downloads go to Vaulta for full speed and resume.</p>
+
+    <div class="ext">
+      <article class="card reveal">
+        <div class="card-head">
+          <div class="os-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5a2 2 0 114 0V6h3.5a1 1 0 011 1v3.5H16a2 2 0 100 4h1.5V18a1 1 0 01-1 1H13v-1.5a2 2 0 10-4 0V19H5.5a1 1 0 01-1-1v-3.5H6a2 2 0 100-4H4.5V7a1 1 0 011-1H9z"/></svg></div>
+          <div><h3>Vaulta for your browser</h3><p class="needs">Needs the Vaulta app for Mac or Windows, open while you browse</p></div>
+        </div>
+        <div class="browsers"><span>Chrome</span><span>Edge</span><span>Brave</span></div>
+        <a class="dl" href="https://github.com/Nomixee/vaulta/releases/latest/download/Vaulta-Extension.zip" data-asset="Vaulta-Extension.zip">
+          <span class="dl-left"><span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 11l6 6 6-6"/></svg></span>Download extension (.zip)</span>
+          <span class="size num"></span>
+        </a>
+        <ol>
+          <li>Unzip <b>Vaulta-Extension.zip</b> into a folder you'll keep, for example <b>Documents/Vaulta-Extension</b>. The browser loads it from there, so don't delete it.</li>
+          <li>Open <code>chrome://extensions</code> (Edge: <code>edge://extensions</code>, Brave: <code>brave://extensions</code>).</li>
+          <li>Turn on <b>Developer mode</b> in the corner of the page.</li>
+          <li>Click <b>Load unpacked</b> and choose the unzipped folder.</li>
+          <li>Click the puzzle-piece icon in the toolbar and <b>pin Vaulta</b>. A green dot in its popup means it's connected to the app.</li>
+        </ol>
+        <div class="callout"><b>Keep Developer mode on.</b> Browsers switch off extensions added with <i>Load unpacked</i> when it's turned off. If Chrome shows a "developer mode extensions" message when it starts, close it with ×; Vaulta keeps working.</div>
+      </article>
+
+      <div class="card reveal">
+        <div class="player" aria-hidden="true">
+          <div class="play"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></div>
+          <div class="scrub"><span></span></div>
+          <div class="vbtn">
+            <span class="main"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14"/></svg></span>Download</span>
+            <span class="more"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg></span>
+          </div>
+          <div class="vmenu">
+            <div class="sec">Quality</div>
+            <div class="r"><i>2160p (4K)</i><span class="t k">4K</span><small>≈ 1.9 GB</small></div>
+            <div class="r hl"><i>1080p (Full HD)</i><span class="t">FHD</span><small>≈ 612 MB</small></div>
+            <div class="r"><i>720p (HD)</i><span class="t">HD</span><small>≈ 318 MB</small></div>
+            <div class="r"><i>Audio only (MP3)</i><small>≈ 42 MB</small></div>
+          </div>
+        </div>
+        <ul class="ext-points">
+          <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span>
+            <span><b>A button on every video</b>One click downloads at your default quality. The ▾ arrow lists every quality with its size.</span></li>
+          <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>
+            <span><b>Browser downloads go to Vaulta</b>Zip, exe, dmg, pdf, mp4 and more. Hold Alt / Option while clicking to keep one in the browser.</span></li>
+          <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg></span>
+            <span><b>Right-click anything</b>Links, videos and pages have a <i>Download with Vaulta</i> option. Settings live in the toolbar popup.</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
